@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<af:componentDef xmlns:af="http://xmlns.oracle.com/adf/faces/rich" var="attrs" componentVar="comp" definition="private"
+                 xmlns:afc="http://xmlns.oracle.com/adf/faces/rich/component" xmlns:f="http://java.sun.com/jsf/core">
+    <af:xmlContent>
+        <afc:component>
+            <afc:description/>
+            <afc:display-name>DeclarativeTableComponent</afc:display-name>
+            <afc:attribute>
+                <afc:attribute-name>voName</afc:attribute-name>
+                <afc:attribute-class>java.lang.String</afc:attribute-class>
+                <afc:required>true</afc:required>
+            </afc:attribute>
+            <afc:attribute>
+                <afc:attribute-name>dcName</afc:attribute-name>
+                <afc:attribute-class>java.lang.String</afc:attribute-class>
+                <afc:required>true</afc:required>
+            </afc:attribute>
+            <afc:attribute>
+                <afc:attribute-name>HeaderText</afc:attribute-name>
+                <afc:attribute-class>java.lang.String</afc:attribute-class>
+                <afc:required>true</afc:required>
+            </afc:attribute>
+            <afc:attribute>
+                <afc:attribute-name>SearchRegion</afc:attribute-name>
+                <afc:attribute-class>java.lang.String</afc:attribute-class>
+                <afc:required>true</afc:required>
+            </afc:attribute>
+            <afc:component-extension>
+                <afc:component-tag-namespace>component</afc:component-tag-namespace>
+                <afc:component-taglib-uri>/DeclarativeTableComponent</afc:component-taglib-uri>
+            </afc:component-extension>
+        </afc:component>
+    </af:xmlContent>
+    <af:query headerText="#{attrs.HeaderText}" disclosed="true" id="dc_q1" resultComponentId="::dc_pc1:dc_t1"
+              model="#{attrs.SearchRegion.queryModel}" value="#{attrs.SearchRegion.queryDescriptor}"
+              queryListener="#{attrs.SearchRegion.processQuery}"
+              queryOperationListener="#{attrs.SearchRegion.processQueryOperation}"/>
+    <af:panelBox text="#{attrs.HeaderText}" id="dc_pb1" styleClass="AFStretchWidth">
+        <f:facet name="toolbar"/>
+        <af:panelCollection id="dc_pc1" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="secondaryToolbar">
+                <af:toolbar id="t3" stretchId="s2">
+                    <af:spacer width="10" height="10" id="s2" clientComponent="true"/>
+                    <af:outputText value="Total Records:#{backingBeanScope.QueryAndTableCompBean.rowCountEstimated}"
+                                   id="ot2" noWrap="true" partialTriggers="::dc_q1 dc_t1"/>
+                </af:toolbar>
+            </f:facet>
+            <af:table rows="#{backingBeanScope.QueryAndTableCompBean.tree.rangeSize}"
+                      fetchSize="#{backingBeanScope.QueryAndTableCompBean.tree.rangeSize}" emptyText="#{backingBeanScope.QueryAndTableCompBean.tree.viewable ?  
+          'No data to display.' : 'Access Denied.'}" var="row" rowBandingInterval="0"
+                      filterModel="#{attrs.SearchRegion.queryDescriptor}"
+                      queryListener="#{attrs.SearchRegion.processQuery}"
+                      value="#{backingBeanScope.QueryAndTableCompBean.tree.collectionModel}" id="dc_t1"
+                      rowSelection="multiple" columnStretching="last" styleClass="AFStretchWidth" varStatus="vs"
+                      filterVisible="true">
+                <af:column rowHeader="true" headerText="Clean" id="c14" width="40" inlineStyle="text-align:left;">
+                    <af:outputText value="#{vs.index+1}" id="ot20">
+                        <af:convertNumber groupingUsed="false"/>
+                    </af:outputText>
+                </af:column>
+                <af:forEach items="#{backingBeanScope.QueryAndTableCompBean.tree.attributeDefs}" var="def"
+                            varStatus="vss">
+                    <af:column headerText="#{backingBeanScope.QueryAndTableCompBean.tree.labels[def.name]}"
+                               sortable="true" sortProperty="#{def.name}" id="dc_c1" filterable="true"
+                               filterFeatures="caseInsensitive">
+                        <af:outputText value="#{row[def.name]}" id="dc_ot1"/>
+                    </af:column>
+                </af:forEach>
+            </af:table>
+        </af:panelCollection>
+    </af:panelBox>
+</af:componentDef>

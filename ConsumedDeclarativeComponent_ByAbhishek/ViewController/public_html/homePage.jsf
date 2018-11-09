@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+        xmlns:DeclarativeTableComponent="/DeclarativeTableComponent">
+    <af:document title="homePage.jsf" id="d1">
+        <af:messages id="m1"/>
+        <af:form id="f1">
+         
+            <DeclarativeTableComponent:DeclarativeTableComponent dcName="AppModuleDataControl" HeaderText="Employees Details" 
+            SearchRegion="#{bindings.EmployeesVOCriteriaQuery}"  voName="EmployeesVO1" id="dtc1"/>
+    
+        </af:form>
+    </af:document>
+</f:view>
